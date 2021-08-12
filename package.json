@@ -1,13 +1,17 @@
 {
   "name": "ma-api",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Back-End für Test-Website",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mmosberger/ma-api.git"
+  },
   "keywords": [],
-  "author": "",
+  "author": "Michel Mosberger",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^10.0.0",

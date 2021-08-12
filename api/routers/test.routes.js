@@ -1,5 +1,5 @@
 /**
- *Description of test.js
+ *Description of test.routers.js
  *@author Michel Mosberger
  *@version 1.0
  *@since 12.08.2021
@@ -8,7 +8,7 @@
 const express = require('express')
 const router = express.Router()
 
-const database = require('../database.js')
+const database = require('../services/database.js')
 
 router.get('/test/:id', async (req, res) => {
     console.log("Fetching test with id: " + req.params.id)
@@ -63,6 +63,7 @@ router.get('/test/:id', async (req, res) => {
 
 
     res.status(200).json(json_file)
+    //TODO gute Websiten: https://blog.logrocket.com/node-js-express-js-mysql-rest-api-example/ https://github.com/geshan/programming-langugages-api
 })
 
 module.exports = router
