@@ -1,4 +1,5 @@
 const mysql = require("mysql");
+require('dotenv').config();
 
 class Database {
     static query = async (string, values) => {
