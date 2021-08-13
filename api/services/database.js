@@ -31,6 +31,37 @@ class Database {
 
         });
     }
+
+    static getTest = async (url) => {
+
+        const queryString = "SELECT * FROM test WHERE url = ?"
+        const queryValue = [url]
+
+        return await this.query(queryString, queryValue)
+    }
+
+    static getAnswers = async (testID) => {
+
+        const queryString = "SELECT * FROM answer WHERE test_id = ?"
+        const queryValue = [testID]
+
+        return await this.query(queryString, queryValue)
+    }
+
+    static getLegende = async (testID) => {
+
+        const queryString = "SELECT * FROM icons WHERE test_id = ?"
+        const queryValue = [testID]
+
+        return await this.query(queryString, queryValue)
+    }
+
+    static updateTest = async (complete_date, finished, time_taken, sleep_duration, sleep_quality, stress, url) => {
+        const queryString = "UPDATE test set complete_date = CURRENT_TIMESTAMP, finished=?, time_taken=?, sleep_duration=?, sleep_quality=?, stress=? WHERE url =?"
+        const queryValues = [complete_date, finished, time_taken, sleep_duration, sleep_quality, stress, url]
+
+        return await this.query(queryString, queryValues)
+    }
 }
 
 

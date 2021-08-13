@@ -1,17 +1,22 @@
 const express = require("express");
 const app = express()
 const morgan = require('morgan');
+const bodyParser = require("body-parser");
+
+let jsonParser = bodyParser.json()
+let urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 
-const PORT = 8080
+
+const PORT = parseInt(process.env.PORT, 10) || 8080;
 
 const router = require('./api/routers/test.routes.js')
 
-app.use(router)
-
 app.use(morgan('dev'));
 
-app.use(express.json())
+app.use(urlencodedParser)
+
+app.use(jsonParser)
 
 app.get("/", (req, res) => {
     console.log("Responding to root route")
@@ -31,3 +36,5 @@ app.use((err, req, res, next) => {
 
     return;
 });
+
+app.use(router)

@@ -5,12 +5,14 @@
  *@since 12.08.2021
  */
 
-const express = require('express')
-const router = express.Router()
+const router = require('express').Router()
 
-const testcontroller = require("../controllers/test.controller.js")
 
-router.get('/test/:id', testcontroller.getTest )
+const test = require("../controllers/test.controller.js")
+
+router.get('/test/:id', test.getTest)
+
+router.patch('/test/:id', test.updateTest)
 
     //TODO gute Websiten: https://blog.logrocket.com/node-js-express-js-mysql-rest-api-example/ https://github.com/geshan/programming-langugages-api
 
