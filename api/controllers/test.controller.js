@@ -1,4 +1,6 @@
 const database = require("../services/database.js");
+const {validationResult} = require('express-validator');
+
 
 exports.getTest = async (req, res) => {
 
@@ -12,9 +14,15 @@ exports.getTest = async (req, res) => {
         })
     }
 
-    if (test_data[0].finished === 1) {
+    if (test_data[0].finished > 0) {
         return res.status(403).json({
             message: "Dieser Test wurde bereits gelöst."
+        })
+    }
+
+    if (test_data[0].finished === 1) {
+        return res.status(403).json({
+            message: "Dieser Test wird zurzeit gelöst."
         })
     }
 
@@ -24,6 +32,19 @@ exports.getTest = async (req, res) => {
             message: "Bitte gib an, wie viel du geschlafen hast."
         })
     }
+
+    if (!test_data[0].sleep_quality) {
+        return res.status(401).json({
+            message: "Bitte gib an, wie gut du geschlafen hast."
+        })
+    }
+
+    if (!test_data[0].stress) {
+        return res.status(401).json({
+          message: "Bitte gib an, ob du letzthin Stress hattest."
+        })
+    }
+
 
 
     let test_legende = await database.getLegende(test_data.id)
@@ -51,10 +72,32 @@ exports.getTest = async (req, res) => {
 
 };
 
+exports.patchQuestions = async (req, res) => {
+
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+
+    res.status(200).json({
+        data: req.body
+    })
+    console.log(validationResult)
+};
+
 exports.updateTest = async (req, res) => {
 
-    const {id} = req.params;
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     const data = req.body;
+    //if(!complete_date) // TODO Array validieren
+
 
     res.status(200).json({
         data: req.body
