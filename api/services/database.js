@@ -62,6 +62,10 @@ class Database {
 
         return await this.query(queryString, queryValues)
     }
+
+    static UpdateUserAnswers = async (testID, answers) => {
+        //TODO wie will das gemacht werden? WEnn man ja nach test_id, antworten, symbol und user input filtert gibt es immer noch mehrere Rows und des weiteren müsste doch jedes einzeln updated werden, also 100 db requests.
+    }
 }
 
 

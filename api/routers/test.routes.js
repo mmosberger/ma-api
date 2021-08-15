@@ -26,7 +26,10 @@ router.patch('/test/:id/sleep',
 // finished, sleep_start, sleep_end, sleep_quality, stress, drugs
 
 
-router.patch('/test/:id', body().isArray(), test.updateTest)
+router.patch('/test/:id',
+    body('userInput').isArray(),
+    body('time_taken').isInt(), //TODO sollte in sec gesendet werden
+    test.updateTest)
 
 //TODO FRage: Werden alle Testantworten auf 1 mal gesendet?
 //TODO gute Websiten: https://blog.logrocket.com/node-js-express-js-mysql-rest-api-example/ https://github.com/geshan/programming-langugages-api
