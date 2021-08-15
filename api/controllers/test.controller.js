@@ -99,8 +99,6 @@ exports.updateTest = async (req, res) => {
     //if(!complete_date) // TODO Array validieren
 
 
-    res.status(200).json({
-        data: req.body
-    })
+    res.status(200).json(req.body)
     console.log(data)
 };
