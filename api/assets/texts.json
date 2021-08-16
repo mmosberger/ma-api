@@ -1,0 +1,26 @@
+{
+  "validation": {
+
+    "checkSleep": {
+
+      "finished_missing": "Bitte gib an, ob der Test beendet ist.",
+      "finished_wrong_value": "Wrong value for finished.",
+      "drugs_missing": "Bitte gib an, ob du gestern Abend Alkohol oder Nikotin zu dir genommen hast",
+      "drugs_wrong_value": "Wrong Integer for Value drugs.",
+      "sleep_quality_missing": "Bitte gib auf der Skala von 1-10 an, wie gut du geschlafen hast.",
+      "sleep_quality_wrong_value": "Wrong Integer for Value sleep_quality.",
+      "start_sleep_missing": "Bitte gib das Datum und die Uhrzeit an, wann du Schlafen gegangen bist.",
+      "start_sleep_wrong_value": "Wrong Value for start_sleep",
+      "end_sleep_missing": "Bitte gib das Datum und die Uhrzeit an, wann du heute Morgen aufgewacht bist",
+      "end_sleep_wrong_value": "Wrong Value for end_sleep",
+      "stress_misssing": "Bitte gib an, ob du gestern Abend jegliche Art von Stress hattest.",
+      "stress_wrong_value": "Wrong value for stress."
+
+    },
+    "checkTest": {
+      "user_input_missing": "User Input is missing.",
+      "time_taken_missing": "Value for time Taken is missing",
+      "time_taken_wrong_value": "Wrong Value for time taken"
+    }
+  }
+}
