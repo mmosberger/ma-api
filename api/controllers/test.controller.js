@@ -72,7 +72,7 @@ exports.getTest = async (req, res) => {
 
 };
 
-exports.patchQuestions = async (req, res) => {
+exports.sleepQuestions = async (req, res) => {
 
     const errors = validationResult(req);
 
