@@ -10,13 +10,14 @@ let urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 const PORT = parseInt(process.env.PORT, 10) || 8080;
 
-const router = require('./api/routers/test.routes.js')
+const router = require('./api/routers/test.routes.js');
+const helpers = require('./api/services/helpers.js');
 
 app.use(morgan('dev'));
 
-app.use(urlencodedParser)
+app.use(urlencodedParser);
 
-app.use(jsonParser)
+app.use(jsonParser);
 
 app.get("/", (req, res) => {
     console.log("Responding to root route")
@@ -29,12 +30,12 @@ app.listen(PORT, () => {
 })
 
 /* Error handler middleware */
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
     const statusCode = err.statusCode || 500;
     console.error(err.message, err.stack);
     res.status(statusCode).json({'message': err.message});
-
-    return;
 });
 
 app.use(router)
+
+helpers.checkCancelledTests()
