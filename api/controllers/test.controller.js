@@ -49,14 +49,6 @@ exports.getTest = async (req, res) => {
         })
     }
 
-    /*if (!test_data[0].stress) {
-        return res.status(401).json({
-            errors: [{
-                msg: "Bitte gib an, ob du letzthin Stress hattest."
-            }]
-        })
-    }*/
-
     if (!test_data[0].drugs) {
         return res.status(401).json({
             errors: [{
@@ -106,6 +98,8 @@ exports.sleepQuestions = async (req, res) => {
     const id = req.params.id
     let test_data = await database.getTest(id)
 
+    let data = req.body;
+
     if (test_data.length < 1) {
         return res.status(404).json({
             errors: [{
@@ -113,8 +107,10 @@ exports.sleepQuestions = async (req, res) => {
             }]
         })
     }
+    data.start_sleep = new Date(data.start_sleep)
+    data.end_sleep = new Date(data.end_sleep)
 
-    await database.updateTest()
+    await database.updateTest(data.start_sleep, data.end_sleep, data.sleep_quality, data.drugs, id)
 
 
     return res.status(200).json({
@@ -145,8 +141,7 @@ exports.updateTest = async (req, res) => {
 
     const data = req.body;
 
-
-    for (let answer of data) {
+    for (let answer of data.answers) {
 
         if (!("user_input" in answer)) {
             return res.status(400).json({
@@ -164,9 +159,11 @@ exports.updateTest = async (req, res) => {
             })
         }
 
-        await database.UpdateUserAnswers(answer.user_input, id, answer.icon_id)
-        await database.endTest(id, data.time_taken)
+        await database.UpdateUserAnswers(answer.user_input, test_data[0].id, answer.icon_id)
+        //FIXME hier braucht es doch noch eine weitere Variable, weil jetzt ändert er alle, die darauf zutreffen, also gibt es falsche Antworten.
     }
+
+    await database.endTest(id, data.time_taken)
 
     return res.status(200).json({
         message: "request completed"

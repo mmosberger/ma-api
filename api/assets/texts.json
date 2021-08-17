@@ -4,22 +4,20 @@
     "checkSleep": {
 
       "finished_missing": "Bitte gib an, ob der Test beendet ist.",
-      "finished_wrong_value": "Wrong value for finished.",
-      "drugs_missing": "Bitte gib an, ob du gestern Abend Alkohol oder Nikotin zu dir genommen hast",
-      "drugs_wrong_value": "Wrong Integer for Value drugs.",
+      "finished_wrong_value": "Wrong value for finished, it must be a value from 0-2.",
+      "drugs_missing": "Bitte gib an, ob du gestern Abend Alkohol oder Nikotin zu dir genommen hast.",
+      "drugs_wrong_value": "Wrong Integer for Value drugs, it must be a value from 0-1",
       "sleep_quality_missing": "Bitte gib auf der Skala von 1-10 an, wie gut du geschlafen hast.",
-      "sleep_quality_wrong_value": "Wrong Integer for Value sleep_quality.",
+      "sleep_quality_wrong_value": "Wrong Integer for Value sleep_quality, it must be a value from 1-10.",
       "start_sleep_missing": "Bitte gib das Datum und die Uhrzeit an, wann du Schlafen gegangen bist.",
-      "start_sleep_wrong_value": "Wrong Value for start_sleep",
-      "end_sleep_missing": "Bitte gib das Datum und die Uhrzeit an, wann du heute Morgen aufgewacht bist",
-      "end_sleep_wrong_value": "Wrong Value for end_sleep",
-      "stress_misssing": "Bitte gib an, ob du gestern Abend jegliche Art von Stress hattest.",
-      "stress_wrong_value": "Wrong value for stress."
+      "start_sleep_wrong_value": "Wrong Value for start_sleep, it must be a date in the format: YYYY-DD-MM hh:mm:ss.",
+      "end_sleep_missing": "Bitte gib das Datum und die Uhrzeit an, wann du heute Morgen aufgewacht bist.",
+      "end_sleep_wrong_value": "Wrong Value for end_sleep, it must be a date in the format: YYYY-DD-MM hh:mm:ss."
 
     },
     "checkTest": {
-      "user_input_missing": "User Input is missing.",
-      "user_input_wrong_value": "Wrong Value for user Input, must be an array",
+      "answers_missing": "User Input is missing.",
+      "answers_wrong_value": "Wrong Value for user Input, must be an array",
       "time_taken_missing": "Value for time Taken is missing",
       "time_taken_wrong_value": "Wrong Value for time taken"
     }
