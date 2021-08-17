@@ -1,5 +1,4 @@
 const mysql = require("mysql");
-const {NULL} = require("mysql/lib/protocol/constants/types");
 require('dotenv').config();
 
 class Database {
@@ -33,6 +32,7 @@ class Database {
         });
     }
 
+
     static getTest = async (url) => {
 
         const queryString = "SELECT * FROM test WHERE url = ?"
@@ -41,32 +41,51 @@ class Database {
         return await this.query(queryString, queryValue)
     }
 
-    static getAnswers = async (testID) => {
+    static updateTest = async (sleep_start, sleep_end, sleep_quality, drugs, url) => {
+        const queryString = "UPDATE test set sleep_start =?, sleep_end =?, sleep_quality =?, drugs =? WHERE url =?"
+        const queryValues = [sleep_start, sleep_end, sleep_quality, drugs, url]
 
-        const queryString = "SELECT * FROM answer WHERE test_id = ?"
-        const queryValue = [testID]
+        return await this.query(queryString, queryValues)
+    }
 
-        return await this.query(queryString, queryValue)
+    static startTest = async(url) => {
+        let queryString = 'UPDATE test SET finished =?, start_date =?, WHERE url =?'
+        let queryValues = ["1", new Date(), url];
+
+        return await this.query(queryString, queryValues);
     }
 
     static getLegende = async (testID) => {
 
-        const queryString = "SELECT * FROM icons WHERE test_id = ?"
+        const queryString = "SELECT * FROM icons WHERE test_id =?"
         const queryValue = [testID]
 
         return await this.query(queryString, queryValue)
     }
 
-    static updateTest = async (complete_date, finished, time_taken, sleep_duration, sleep_quality, stress, url) => {
-        const queryString = "UPDATE test set complete_date = CURRENT_TIMESTAMP, finished=?, time_taken=?, sleep_duration=?, sleep_quality=?, stress=? WHERE url =?"
-        const queryValues = [complete_date, finished, time_taken, sleep_duration, sleep_quality, stress, url]
-        //TODO noch fertig machen
+    static getAnswers = async (testID) => {
+
+        const queryString = "SELECT * FROM answer WHERE test_id =?"
+        const queryValue = [testID]
+
+        return await this.query(queryString, queryValue)
+    }
+
+    static UpdateUserAnswers = async (user_input, test_id, icon_id) => {
+        const queryString = 'UPDATE answers SET user_input =? WHERE test_id =? AND icon_id =?';
+        const queryValues = [user_input, test_id, icon_id];
+
+        //todo wie macht man das, wenn der user es nicht eingefüllt hat, dann ist es ja NULL und das kann man in queryValues nicht eifügen
         return await this.query(queryString, queryValues)
     }
 
-    static UpdateUserAnswers = async (testID, answers) => {
-        //TODO wie will das gemacht werden? WEnn man ja nach test_id, antworten, symbol und user input filtert gibt es immer noch mehrere Rows und des weiteren müsste doch jedes einzeln updated werden, also 100 db requests.
+    static endTest = async (url, time_taken) => {
+        let queryString = 'UPDATE test SET finished =?, complete_date =?, time_taken =? WHERE url =?'
+        let queryValues = ["2", new Date(), time_taken, url];
+
+        return await this.query(queryString, queryValues);
     }
+
 
     static checkCancelledTests = async () => {
         let queryString = 'SELECT * FROM test WHERE finished =? AND start_date IS NOT NULL'
