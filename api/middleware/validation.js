@@ -3,10 +3,7 @@ const { validation } = require('../assets/texts.json')
 
 exports.checkSleep = [
 
-        body('finished').exists().withMessage(validation.checkSleep.finished_missing).isInt({
-            min: 0,
-            max: 2
-        }).withMessage(validation.checkSleep.finished_wrong_value),
+
         body('drugs').exists().withMessage(validation.checkSleep.drugs_missing).isInt({
             min: 0,
             max: 1
@@ -28,7 +25,13 @@ exports.checkSleep = [
 
 exports.checkTest = [
 
+
+        body('finished').exists().withMessage(validation.checkSleep.finished_missing).isInt({
+            min: 0,
+            max: 2
+        }).withMessage(validation.checkSleep.finished_wrong_value),
         body('userInput').exists().withMessage(validation.checkTest.user_input_missing).isArray().withMessage(validation.checkTest.user_input_wrong_value), //TODO wie kann man überprüfen, ob diese Values im array drin existieren
         body('time_taken').exists().withMessage(validation.checkTest.time_taken_missing).isInt().withMessage(validation.checkTest.time_taken_wrong_value)
+
 
     ]
