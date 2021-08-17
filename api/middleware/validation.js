@@ -15,10 +15,10 @@ exports.checkSleep = [
             min: 1,
             max: 10
         }).withMessage(validation.checkSleep.sleep_quality_missing),
-        body('stress').exists().withMessage(validation.checkSleep.stress_missing).isInt({
+        /*body('stress').exists().withMessage(validation.checkSleep.stress_missing).isInt({
             min: 0,
             max: 1
-        }).withMessage(validation.checkSleep.stress_wrong_value),
+        }).withMessage(validation.checkSleep.stress_wrong_value),*/
         body('start_sleep').exists().withMessage(validation.checkSleep.start_sleep_missing).isDate().withMessage(validation.checkSleep.start_sleep_wrong_value),
         body('end_sleep').exists().withMessage(validation.checkSleep.end_sleep_missing).isDate().withMessage(validation.checkSleep.end_sleep_wrong_value)
 
@@ -28,9 +28,7 @@ exports.checkSleep = [
 
 exports.checkTest = [
 
-        body('userInput').exists().withMessage(validation.checkTest.user_input_missing).isArray(),
+        body('userInput').exists().withMessage(validation.checkTest.user_input_missing).isArray().withMessage(validation.checkTest.user_input_wrong_value), //TODO wie kann man überprüfen, ob diese Values im array drin existieren
         body('time_taken').exists().withMessage(validation.checkTest.time_taken_missing).isInt().withMessage(validation.checkTest.time_taken_wrong_value)
 
     ]
-
-    //TODO FRage: Werden alle Testantworten auf 1 mal gesendet?
