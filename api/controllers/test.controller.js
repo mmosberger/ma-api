@@ -10,41 +10,60 @@ exports.getTest = async (req, res) => {
 
     if (test_data.length < 1) {
         return res.status(404).json({
-            message: "Es existiert kein Test mit dieser URL, bitte überprüfe deinen Link und versuche es dann erneut."
+            errors: [{
+                msg: "Es existiert kein Test mit dieser URL, bitte überprüfe deinen Link und versuche es dann erneut."
+            }]
         })
     }
 
     if (test_data[0].finished > 0) {
         return res.status(403).json({
-            message: "Dieser Test wurde bereits gelöst."
+            errors: [{
+                msg: "Dieser Test wurde bereits gelöst."
+            }]
         })
     }
 
     if (test_data[0].finished === 1) {
         return res.status(403).json({
-            message: "Dieser Test wird zurzeit gelöst."
+            errors: [{
+                msg: "Dieser Test wird zurzeit gelöst."
+            }]
         })
     }
 
 
     if (!test_data[0].sleep_duration) {
         return res.status(401).json({
-            message: "Bitte gib an, wie viel du geschlafen hast."
+            errors: [{
+                msg: "Bitte gib an, wie viel du geschlafen hast."
+            }]
         })
     }
 
     if (!test_data[0].sleep_quality) {
         return res.status(401).json({
-            message: "Bitte gib an, wie gut du geschlafen hast."
+            errors: [{
+                msg: "Bitte gib an, wie gut du geschlafen hast."
+            }]
         })
     }
 
-    if (!test_data[0].stress) {
+    /*if (!test_data[0].stress) {
         return res.status(401).json({
-          message: "Bitte gib an, ob du letzthin Stress hattest."
+            errors: [{
+                msg: "Bitte gib an, ob du letzthin Stress hattest."
+            }]
+        })
+    }*/
+
+    if (!test_data[0].drugs) {
+        return res.status(401).json({
+            errors: [{
+                msg: "Bitte gib an, ob du gestern Abend Alkohol oder Nikotin zu dir genommen hast"
+            }]
         })
     }
-
 
 
     let test_legende = await database.getLegende(test_data.id)
@@ -70,6 +89,10 @@ exports.getTest = async (req, res) => {
 
     res.status(200).json(json_file)
 
+    setTimeout(async function(){
+        return await database.startTest(id)
+    }, 5000);
+
 };
 
 exports.sleepQuestions = async (req, res) => {
@@ -77,14 +100,26 @@ exports.sleepQuestions = async (req, res) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json({errors: errors.array()});
     }
 
+    const id = req.params.id
+    let test_data = await database.getTest(id)
 
-    res.status(200).json({
-        data: req.body
+    if (test_data.length < 1) {
+        return res.status(404).json({
+            errors: [{
+                msg: "Es existiert kein Test mit dieser URL, bitte überprüfe deinen Link und versuche es dann erneut."
+            }]
+        })
+    }
+
+    await database.updateTest()
+
+
+    return res.status(200).json({
+        message: "request completed"
     })
-    console.log(validationResult)
 };
 
 exports.updateTest = async (req, res) => {
@@ -92,13 +127,48 @@ exports.updateTest = async (req, res) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json({errors: errors.array()});
     }
 
+    const id = req.params.id
+    let test_data = await database.getTest(id)
+
+    if (test_data.length < 1) {
+        return res.status(404).json({
+            errors: [{
+                msg: "Es existiert kein Test mit dieser URL, bitte überprüfe deinen Link und versuche es dann erneut."
+            }]
+        })
+    }
+
+
+
     const data = req.body;
-    //if(!complete_date) // TODO Array validieren
 
 
-    res.status(200).json(req.body)
-    console.log(data)
+    for (let answer of data) {
+
+        if (!("user_input" in answer)) {
+            return res.status(400).json({
+                errors: [{
+                    msg: "There is no field for user_input."
+                }]
+            })
+        }
+
+        if (!("icon_id" in answer)) {
+            return res.status(400).json({
+                errors: [{
+                    msg: "There is no field for icon_id."
+                }]
+            })
+        }
+
+        await database.UpdateUserAnswers(answer.user_input, id, answer.icon_id)
+        await database.endTest(id, data.time_taken)
+    }
+
+    return res.status(200).json({
+        message: "request completed"
+    })
 };
