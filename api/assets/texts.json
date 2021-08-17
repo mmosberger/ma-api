@@ -19,6 +19,7 @@
     },
     "checkTest": {
       "user_input_missing": "User Input is missing.",
+      "user_input_wrong_value": "Wrong Value for user Input, must be an array",
       "time_taken_missing": "Value for time Taken is missing",
       "time_taken_wrong_value": "Wrong Value for time taken"
     }
