@@ -49,7 +49,7 @@ class Database {
     }
 
     static startTest = async(url) => {
-        let queryString = 'UPDATE test SET finished =?, start_date =?, WHERE url =?'
+        let queryString = 'UPDATE test SET finished =?, start_date =? WHERE url =?'
         let queryValues = ["1", new Date(), url];
 
         return await this.query(queryString, queryValues);
@@ -65,15 +65,15 @@ class Database {
 
     static getAnswers = async (testID) => {
 
-        const queryString = "SELECT * FROM answer WHERE test_id =?"
+        const queryString = "SELECT * FROM answers WHERE test_id =?"
         const queryValue = [testID]
 
         return await this.query(queryString, queryValue)
     }
 
-    static UpdateUserAnswers = async (user_input, test_id, icon_id) => {
-        const queryString = 'UPDATE answers SET user_input =? WHERE test_id =? AND icon_id =?';
-        const queryValues = [user_input, test_id, icon_id];
+    static UpdateUserAnswers = async (user_input, icon_id, test_id, answer_no) => {
+        const queryString = 'UPDATE answers SET user_input =? WHERE answer_no =? AND icons_id =? AND test_id =?';
+        const queryValues = [user_input, answer_no, icon_id, test_id];
 
         //todo wie macht man das, wenn der user es nicht eingefüllt hat, dann ist es ja NULL und das kann man in queryValues nicht eifügen
         return await this.query(queryString, queryValues)
@@ -95,8 +95,8 @@ class Database {
     }
 
     static resetTest = async (url) => {
-        let queryString = 'UPDATE test SET finished =?, start_date = ? WHERE url =?'
-        let queryValues = ['0', null, url]
+        let queryString = 'UPDATE test SET finished =?, start_date = ?, sleep_quality =?, sleep_start =?, sleep_end =?, drugs =? WHERE url =?'
+        let queryValues = ['0', null, null, null, null, null, url]
 
         return await this.query(queryString, queryValues)
     }

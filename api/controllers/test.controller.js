@@ -16,7 +16,7 @@ exports.getTest = async (req, res) => {
         })
     }
 
-    if (test_data[0].finished > 0) {
+    if (test_data[0].finished > 1) {
         return res.status(403).json({
             errors: [{
                 msg: "Dieser Test wurde bereits gelöst."
@@ -33,10 +33,18 @@ exports.getTest = async (req, res) => {
     }
 
 
-    if (!test_data[0].sleep_duration) {
+    if (!test_data[0].sleep_start) {
         return res.status(401).json({
             errors: [{
-                msg: "Bitte gib an, wie viel du geschlafen hast."
+                msg: "Bitte gib an, wann du schlafen gegangen bist."
+            }]
+        })
+    }
+
+    if (!test_data[0].sleep_end) {
+        return res.status(401).json({
+            errors: [{
+                msg: "Bitte gib an, wann du aufgewacht bist."
             }]
         })
     }
@@ -49,7 +57,7 @@ exports.getTest = async (req, res) => {
         })
     }
 
-    if (!test_data[0].drugs) {
+    if (test_data[0].drugs == null) {
         return res.status(401).json({
             errors: [{
                 msg: "Bitte gib an, ob du gestern Abend Alkohol oder Nikotin zu dir genommen hast"
@@ -58,19 +66,22 @@ exports.getTest = async (req, res) => {
     }
 
 
-    let test_legende = await database.getLegende(test_data.id)
-    let test_answers = await database.getAnswers(test_data.id)
+    let test_legende = await database.getLegende(test_data[0].id)
+    let test_answers = await database.getAnswers(test_data[0].id)
+
 
     let legende = [];
     let answers = [];
 
     for (let legende_icon of test_legende) {
-        let obj = {icon_no: legende_icon.icon_no, icon_id: legende_icon.icon_id}
+        let obj = {icon_no: legende_icon.icon_no, icon_id: legende_icon.icon_id, id: legende_icon.id}
         legende.push(obj)
     }
 
+
     for (let answers_icon of test_answers) {
-        let obj = {answer_no: answers_icon.answer_no, icon_id: answers_icon.icon_id}
+        let icon = legende.find(x => x.id === answers_icon.icons_id).icon_id
+        let obj = {answer_no: answers_icon.answer_no, icon_id: icon}
         answers.push(obj)
     }
 
@@ -141,7 +152,9 @@ exports.updateTest = async (req, res) => {
 
     const data = req.body;
 
+    let i = 1
     for (let answer of data.answers) {
+        console.log(answer);
 
         if (!("user_input" in answer)) {
             return res.status(400).json({
@@ -159,8 +172,17 @@ exports.updateTest = async (req, res) => {
             })
         }
 
-        await database.UpdateUserAnswers(answer.user_input, test_data[0].id, answer.icon_id)
-        //FIXME hier braucht es doch noch eine weitere Variable, weil jetzt ändert er alle, die darauf zutreffen, also gibt es falsche Antworten.
+        /*if (!("answer_no" in answer)) {
+            return res.status(400).json({
+                errors: [{
+                    msg: "There is no field for answer_no."
+                }]
+            })
+        }*/
+        //todo reicht es hier mit i, oder soll ich die answer_no im body auch verlangen?
+
+        await database.UpdateUserAnswers(answer.user_input, answer.icon_id, test_data[0].id, i)
+        i++
     }
 
     await database.endTest(id, data.time_taken)
