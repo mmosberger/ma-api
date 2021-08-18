@@ -74,7 +74,6 @@ class Database {
     static UpdateUserAnswers = async (user_input, test_id, icon_id) => {
         const queryString = 'UPDATE answers SET user_input =? WHERE test_id =? AND icon_id =?';
         const queryValues = [user_input, test_id, icon_id];
-        console.log(queryValues);
 
         //todo wie macht man das, wenn der user es nicht eingefüllt hat, dann ist es ja NULL und das kann man in queryValues nicht eifügen
         return await this.query(queryString, queryValues)
@@ -96,8 +95,8 @@ class Database {
     }
 
     static resetTest = async (url) => {
-        let queryString = 'UPDATE test SET finished =?, start_date = NULL WHERE url =?'
-        let queryValues = ['0', url]
+        let queryString = 'UPDATE test SET finished =?, start_date = ? WHERE url =?'
+        let queryValues = ['0', null, url]
 
         return await this.query(queryString, queryValues)
     }
