@@ -1,6 +1,5 @@
 const {body} = require("express-validator");
 const {validation} = require('../assets/texts.json')
-const moment = require("moment");
 
 exports.checkSleep = [
 
@@ -17,8 +16,8 @@ exports.checkSleep = [
         min: 0,
         max: 1
     }).withMessage(validation.checkSleep.stress_wrong_value),*/
-    body('start_sleep').exists().withMessage(validation.checkSleep.start_sleep_missing).custom(isValidDate).withMessage(validation.checkSleep.start_sleep_wrong_value),
-    body('end_sleep').exists().withMessage(validation.checkSleep.end_sleep_missing).custom(isValidDate).withMessage(validation.checkSleep.end_sleep_wrong_value)
+    body('start_sleep').exists().withMessage(validation.checkSleep.start_sleep_missing).custom(value => isDate(value)),
+    body('end_sleep').exists().withMessage(validation.checkSleep.end_sleep_missing).custom(value => isDate(value))
 
     /*
     Query Example:
@@ -32,8 +31,22 @@ exports.checkSleep = [
 
 ]
 
-function isValidDate(value) {
-    return moment(value).isValid();
+const isDate = (date) => {
+
+    if ((new Date(date) !== "Invalid Date") && !isNaN(new Date(date))){
+
+        let input_date = new Date(date).getTime();
+        let current_date = + new Date();
+
+        if (input_date > current_date) {
+            throw new Error("Dein Datum ist in der Zukunkt. Bitte gib ein gültiges Datum an.")
+        }
+
+        return true;
+    } else {
+        throw new Error("Bitte gib ein gültiges Datum mit Zeit an.")
+    }
+
 }
 
 

@@ -102,8 +102,24 @@ exports.sleepQuestions = async (req, res) => {
 
     const errors = validationResult(req);
 
+    console.log(errors);
+
     if (!errors.isEmpty()) {
         return res.status(400).json({errors: errors.array()});
+    }
+
+    let start_date = new Date(req.body["start_sleep"]).getTime()
+    let end_date = new Date(req.body["end_sleep"]).getTime()
+
+    console.log(start_date);
+    console.log(end_date);
+
+    if (start_date >= end_date){
+        return res.status(400).json({
+            errors: [{
+                msg: "Deine Aufwachuhrzeit kann nicht vor deiner Einschlafzeit sein."
+            }]
+        })
     }
 
     const id = req.params.id

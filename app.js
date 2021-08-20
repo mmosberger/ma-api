@@ -2,6 +2,7 @@ const express = require("express");
 const app = express()
 const morgan = require('morgan');
 const bodyParser = require("body-parser");
+const cors = require("cors")
 
 let jsonParser = bodyParser.json()
 let urlencodedParser = bodyParser.urlencoded({ extended: false })
@@ -12,6 +13,8 @@ const PORT = parseInt(process.env.PORT, 10) || 8080;
 
 const router = require('./api/routers/test.routes.js');
 const helpers = require('./api/services/helpers.js');
+
+app.use(cors())
 
 app.use(morgan('dev'));
 
