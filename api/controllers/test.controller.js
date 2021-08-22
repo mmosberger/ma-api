@@ -8,6 +8,14 @@ exports.getTest = async (req, res) => {
     const id = req.params.id
     let test_data = await database.getTest(id)
 
+    if (test_data.length < 1) {
+        return res.status(404).json({
+            errors: [{
+                msg: "Es existiert kein Test mit dieser URL, bitte überprüfe deinen Link und versuche es dann erneut."
+            }]
+        })
+    }
+
     let test_legende = await database.getLegende(test_data[0].id)
     let test_answers = await database.getAnswers(test_data[0].id)
 
@@ -35,14 +43,6 @@ exports.getTest = async (req, res) => {
     let json_file = {
         legende,
         answers
-    }
-
-    if (test_data.length < 1) {
-        return res.status(404).json({
-            errors: [{
-                msg: "Es existiert kein Test mit dieser URL, bitte überprüfe deinen Link und versuche es dann erneut."
-            }]
-        })
     }
 
     if (test_data[0].finished > 1) {
