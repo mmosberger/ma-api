@@ -53,15 +53,7 @@ const isDate = (date) => {
 exports.checkTest = [
 
 
-    /*
-    body('finished').exists().withMessage(validation.checkSleep.finished_missing).isInt({
-        min: 0,
-        max: 2
-    }).withMessage(validation.checkSleep.finished_wrong_value),
-    Wird automatisch von der API gemacht
-    */
-    body('answers').exists().withMessage(validation.checkTest.answers_missing).isArray().withMessage(validation.checkTest.answers_wrong_value), //TODO wie kann man überprüfen, ob diese Values im array drin existieren
-    body('time_taken').exists().withMessage(validation.checkTest.time_taken_missing).isInt().withMessage(validation.checkTest.time_taken_wrong_value)
+    body('answers').exists().withMessage(validation.checkTest.answers_missing).isArray().withMessage(validation.checkTest.answers_wrong_value)
 
 
     /*

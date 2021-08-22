@@ -92,9 +92,9 @@ exports.getTest = async (req, res) => {
 
     res.status(200).json(json_file)
 
-    setTimeout(async function(){
+    /*setTimeout(async function(){
         return await database.startTest(id)
-    }, 5000);
+    }, 5000);*/
 
 };
 
@@ -111,8 +111,6 @@ exports.sleepQuestions = async (req, res) => {
     let start_date = new Date(req.body["start_sleep"]).getTime()
     let end_date = new Date(req.body["end_sleep"]).getTime()
 
-    console.log(start_date);
-    console.log(end_date);
 
     if (start_date >= end_date){
         return res.status(400).json({
@@ -168,7 +166,6 @@ exports.updateTest = async (req, res) => {
 
     const data = req.body;
 
-    let i = 1
     for (let answer of data.answers) {
         console.log(answer);
 
@@ -188,17 +185,16 @@ exports.updateTest = async (req, res) => {
             })
         }
 
-        /*if (!("answer_no" in answer)) {
+        if (!("answer_no" in answer)) {
             return res.status(400).json({
                 errors: [{
                     msg: "There is no field for answer_no."
                 }]
             })
-        }*/
-        //todo reicht es hier mit i, oder soll ich die answer_no im body auch verlangen?
+        }
 
-        await database.UpdateUserAnswers(answer.user_input, answer.icon_id, test_data[0].id, i)
-        i++
+
+        await database.UpdateUserAnswers(answer.user_input, answer.icon_id, test_data[0].id, answer.answer_no)
     }
 
     await database.endTest(id, data.time_taken)
