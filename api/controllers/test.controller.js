@@ -8,6 +8,35 @@ exports.getTest = async (req, res) => {
     const id = req.params.id
     let test_data = await database.getTest(id)
 
+    let test_legende = await database.getLegende(test_data[0].id)
+    let test_answers = await database.getAnswers(test_data[0].id)
+
+
+    let legende = [];
+    let answers = [];
+
+    for (let legende_icon of test_legende) {
+        let obj = {icon_no: legende_icon.icon_no, icon_id: legende_icon.icon_id, id: legende_icon.id}
+        legende.push(obj)
+    }
+
+
+    for (let answer of test_answers) {
+        let user_input = answer.user_input
+        let answer_no = answer.answer_no
+        let tableIconId = answer.icons_id
+        let symbol_id = answer.icon_id
+
+
+        let obj = {answer_no: answer_no, icon_id: symbol_id, tableRow: tableIconId, user_input: user_input}
+        answers.push(obj)
+    }
+
+    let json_file = {
+        legende,
+        answers
+    }
+
     if (test_data.length < 1) {
         return res.status(404).json({
             errors: [{
@@ -17,10 +46,12 @@ exports.getTest = async (req, res) => {
     }
 
     if (test_data[0].finished > 1) {
-        return res.status(403).json({
+        return res.status(402).json({
             errors: [{
                 msg: "Dieser Test wurde bereits gelöst."
-            }]
+            }],
+            legende,
+            answers
         })
     }
 
@@ -66,28 +97,6 @@ exports.getTest = async (req, res) => {
     }
 
 
-    let test_legende = await database.getLegende(test_data[0].id)
-    let test_answers = await database.getAnswers(test_data[0].id)
-
-
-    let legende = [];
-    let answers = [];
-
-    for (let legende_icon of test_legende) {
-        let obj = {icon_no: legende_icon.icon_no, icon_id: legende_icon.icon_id, id: legende_icon.id}
-        legende.push(obj)
-    }
-
-
-    for (let answer of test_answers) {
-        console.log(answer);
-        let answer_no = answer.answer_no
-        let tableIconId = answer.icons_id
-        let symbol_id = answer.icon_id
-
-        let obj = {answer_no: answer_no, icon_id: symbol_id, tableRow: tableIconId}
-        answers.push(obj)
-    }
     /*for (let answers_icon of test_answers) {
         console.log(answers_icon)
         let icon = legende.find(x => x.id === answers_icon.icons_id).icon_id
@@ -95,10 +104,6 @@ exports.getTest = async (req, res) => {
         answers.push(obj)
     }*/
 
-    let json_file = {
-        legende,
-        answers
-    }
 
     res.status(200).json(json_file)
 
@@ -153,9 +158,6 @@ exports.sleepQuestions = async (req, res) => {
     })
 };
 
-exports.startTest = async (req, res) => {
-
-};
 
 exports.updateTest = async (req, res) => {
 
