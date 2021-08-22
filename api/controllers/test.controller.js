@@ -79,11 +79,21 @@ exports.getTest = async (req, res) => {
     }
 
 
-    for (let answers_icon of test_answers) {
+    for (let answer of test_answers) {
+        console.log(answer);
+        let answer_no = answer.answer_no
+        let tableIconId = answer.icons_id
+        let symbol_id = answer.icon_id
+
+        let obj = {answer_no: answer_no, icon_id: symbol_id, tableRow: tableIconId}
+        answers.push(obj)
+    }
+    /*for (let answers_icon of test_answers) {
+        console.log(answers_icon)
         let icon = legende.find(x => x.id === answers_icon.icons_id).icon_id
         let obj = {answer_no: answers_icon.answer_no, icon_id: icon}
         answers.push(obj)
-    }
+    }*/
 
     let json_file = {
         legende,
@@ -92,9 +102,9 @@ exports.getTest = async (req, res) => {
 
     res.status(200).json(json_file)
 
-    /*setTimeout(async function(){
+    setTimeout(async function(){
         return await database.startTest(id)
-    }, 5000);*/
+    }, 5000);
 
 };
 
@@ -141,6 +151,10 @@ exports.sleepQuestions = async (req, res) => {
     return res.status(200).json({
         message: "request completed"
     })
+};
+
+exports.startTest = async (req, res) => {
+
 };
 
 exports.updateTest = async (req, res) => {
@@ -197,7 +211,7 @@ exports.updateTest = async (req, res) => {
         await database.UpdateUserAnswers(answer.user_input, answer.icon_id, test_data[0].id, answer.answer_no)
     }
 
-    await database.endTest(id, data.time_taken)
+    await database.endTest(id, data.start_date)
 
     return res.status(200).json({
         message: "request completed"

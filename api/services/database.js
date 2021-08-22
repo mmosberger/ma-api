@@ -65,7 +65,7 @@ class Database {
 
     static getAnswers = async (testID) => {
 
-        const queryString = "SELECT * FROM answers WHERE test_id =?"
+        const queryString = 'SELECT * FROM answers INNER JOIN icons ON answers.icons_id = icons.id WHERE answers.test_id = ? ORDER BY answer_no'
         const queryValue = [testID]
 
         return await this.query(queryString, queryValue)
@@ -75,13 +75,12 @@ class Database {
         const queryString = 'UPDATE answers SET user_input =? WHERE answer_no =? AND icons_id =? AND test_id =?';
         const queryValues = [user_input, answer_no, icon_id, test_id];
 
-        //todo wie macht man das, wenn der user es nicht eingefüllt hat, dann ist es ja NULL und das kann man in queryValues nicht eifügen
         return await this.query(queryString, queryValues)
     }
 
-    static endTest = async (url, time_taken) => {
-        let queryString = 'UPDATE test SET finished =?, complete_date =?, time_taken =? WHERE url =?'
-        let queryValues = ["2", new Date(), time_taken, url];
+    static endTest = async (url) => {
+        let queryString = 'UPDATE test SET finished =?, complete_date =? WHERE url =?'
+        let queryValues = ["2", new Date(), url];
 
         return await this.query(queryString, queryValues);
     }

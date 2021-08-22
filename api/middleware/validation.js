@@ -31,6 +31,25 @@ exports.checkSleep = [
 
 ]
 
+
+exports.checkTest = [
+
+
+    body('answers').exists().withMessage(validation.checkTest.answers_missing).isArray().withMessage(validation.checkTest.answers_wrong_value),
+
+
+    /*
+    Query Example:
+    {
+    "answers": [{
+        "icon_id": "3",
+        "user_input": "5"
+    }],
+    "time_taken": "90"
+    }
+ */
+]
+
 const isDate = (date) => {
 
     if ((new Date(date) !== "Invalid Date") && !isNaN(new Date(date))){
@@ -48,22 +67,3 @@ const isDate = (date) => {
     }
 
 }
-
-
-exports.checkTest = [
-
-
-    body('answers').exists().withMessage(validation.checkTest.answers_missing).isArray().withMessage(validation.checkTest.answers_wrong_value)
-
-
-    /*
-    Query Example:
-    {
-    "answers": [{
-        "icon_id": "3",
-        "user_input": "5"
-    }],
-    "time_taken": "90"
-    }
- */
-]
