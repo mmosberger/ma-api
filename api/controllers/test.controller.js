@@ -210,7 +210,7 @@ exports.updateTest = async (req, res) => {
         await database.UpdateUserAnswers(answer.user_input, answer.icon_id, test_data[0].id, answer.answer_no)
     }
 
-    await database.endTest(id, data.start_date)
+    await database.endTest(id)
 
     return res.status(200).json({
         message: "request completed"
