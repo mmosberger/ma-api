@@ -88,7 +88,7 @@ class Database {
     static checkTests = async () => {
         let queryString = 'SELECT * FROM test'
 
-        return await this.query(queryString)
+        return await this.query(queryString, [])
     }
 
     static checkCancelledTests = async () => {
