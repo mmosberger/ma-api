@@ -16,14 +16,13 @@ const helpers = require('./api/services/helpers.js');
 
 app.use(cors())
 
-app.use(morgan('dev'));
+app.use(morgan('combined'));
 
 app.use(urlencodedParser);
 
 app.use(jsonParser);
 
 app.get("/", (req, res) => {
-    console.log("Responding to root route")
     res.send("Hello from ROOOOOT")
 })
 

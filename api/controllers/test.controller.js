@@ -117,8 +117,6 @@ exports.sleepQuestions = async (req, res) => {
 
     const errors = validationResult(req);
 
-    console.log(errors);
-
     if (!errors.isEmpty()) {
         return res.status(400).json({errors: errors.array()});
     }
@@ -183,7 +181,6 @@ exports.updateTest = async (req, res) => {
     const data = req.body;
 
     for (let answer of data.answers) {
-        console.log(answer);
 
         if (!("user_input" in answer)) {
             return res.status(400).json({
