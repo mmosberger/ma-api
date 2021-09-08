@@ -48,11 +48,13 @@ class Database {
         return await this.query(queryString, queryValues)
     }
 
-    static startTest = async(url) => {
+    static initTest = async(url, date) => {
+        console.log(1)
         let queryString = 'UPDATE test SET finished =?, start_date =? WHERE url =?'
         let queryValues = ["1", new Date(), url];
 
-        return await this.query(queryString, queryValues);
+        let query = await this.query(queryString, queryValues);
+        console.log(query)
     }
 
     static getLegende = async (testID) => {

@@ -9,13 +9,15 @@ const router  = require('express').Router()
 
 
 const test = require("../controllers/test.controller.js")
-const {checkSleep, checkTest} = require("../middleware/validation");
+const {checkSleep, checkTest, checkInit} = require("../middleware/validation");
 
 router.get('/test/:id', test.getTest)
 
 router.patch('/test/:id/sleep', checkSleep, test.sleepQuestions)
 
 router.patch('/test/:id', checkTest, test.updateTest)
+
+router.patch('/test/:id/init', checkInit, test.initTest)
 
 
 module.exports = router

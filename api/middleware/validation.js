@@ -48,7 +48,12 @@ exports.checkTest = [
     "time_taken": "90"
     }
  */
-]
+];
+
+exports.checkInit = [
+
+    body('start_date').exists().withMessage(validation.checkTest.start_date_missing)
+];
 
 const isDate = (date) => {
 

@@ -20,6 +20,9 @@
       "answers_wrong_value": "Wrong Value for user Input, must be an array",
       "time_taken_missing": "Value for time Taken is missing",
       "time_taken_wrong_value": "Wrong Value for time taken"
+    },
+    "checkInit": {
+      "start_date_missing": "No Value for start_date"
     }
   }
 }

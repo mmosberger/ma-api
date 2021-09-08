@@ -96,6 +96,14 @@ exports.getTest = async (req, res) => {
         })
     }
 
+    if (!test_data[0].start_date){
+        return res.status(409).json({
+            errors: [{
+                msg: "Bitte starte deinen Test."
+            }]
+        })
+    }
+
 
     /*for (let answers_icon of test_answers) {
         console.log(answers_icon)
@@ -106,10 +114,6 @@ exports.getTest = async (req, res) => {
 
 
     res.status(200).json(json_file)
-
-    setTimeout(async function(){
-        return await database.startTest(id)
-    }, 5000);
 
 };
 
@@ -215,4 +219,27 @@ exports.updateTest = async (req, res) => {
     return res.status(200).json({
         message: "request completed"
     })
+};
+
+exports.initTest = async (req, res) => {
+    console.log(3)
+
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({errors: errors.array()});
+    }
+
+    const id = req.params.id
+    let test_data = await database.getTest(id)
+
+    if (test_data.length < 1) {
+        return res.status(404).json({
+            errors: [{
+                msg: "Es existiert kein Test mit dieser URL, bitte überprüfe deinen Link und versuche es dann erneut."
+            }]
+        })
+    }
+
+    await database.initTest(req.params.id, req.body["start_date"])
 };
