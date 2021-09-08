@@ -113,8 +113,14 @@ exports.getTest = async (req, res) => {
     }*/
 
 
+
     res.status(200).json(json_file)
 
+    if (test_data[0].start_date && test_data[0].finished === 0){
+        setTimeout( function(){
+            database.startTest(id)
+        }, 10000);
+    }
 };
 
 exports.sleepQuestions = async (req, res) => {
@@ -222,7 +228,6 @@ exports.updateTest = async (req, res) => {
 };
 
 exports.initTest = async (req, res) => {
-    console.log(3)
 
     const errors = validationResult(req);
 
@@ -242,4 +247,8 @@ exports.initTest = async (req, res) => {
     }
 
     await database.initTest(req.params.id, req.body["start_date"])
+
+    return res.status(200).json({
+        message: "request completed"
+    })
 };

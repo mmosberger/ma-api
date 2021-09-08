@@ -49,12 +49,17 @@ class Database {
     }
 
     static initTest = async(url, date) => {
-        console.log(1)
-        let queryString = 'UPDATE test SET finished =?, start_date =? WHERE url =?'
-        let queryValues = ["1", new Date(), url];
+        let queryString = 'UPDATE test SET start_date =? WHERE url =?'
+        let queryValues = [new Date(), url];
 
-        let query = await this.query(queryString, queryValues);
-        console.log(query)
+        return await this.query(queryString, queryValues);
+    }
+
+    static startTest = async(url) => {
+        let queryString = 'UPDATE test SET finished=? WHERE url =?'
+        let queryValues = ['1', url];
+
+        return await this.query(queryString, queryValues);
     }
 
     static getLegende = async (testID) => {
