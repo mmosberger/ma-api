@@ -23,6 +23,7 @@ USE `maturaarbeit` ;
 CREATE TABLE IF NOT EXISTS `maturaarbeit`.`user` (
                                                      `id` INT NOT NULL AUTO_INCREMENT,
                                                      `name` VARCHAR(255) NOT NULL,
+                                                     `disabled` int default 0 not null,
                                                      PRIMARY KEY (`id`))
     ENGINE = InnoDB;
 
