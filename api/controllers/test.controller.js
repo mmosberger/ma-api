@@ -4,7 +4,6 @@ const {validationResult} = require('express-validator');
 
 exports.getTest = async (req, res) => {
 
-
     const id = req.params.id
     let test_data = await database.getTest(id)
 
@@ -104,24 +103,10 @@ exports.getTest = async (req, res) => {
         })
     }
 
-
-    /*for (let answers_icon of test_answers) {
-        console.log(answers_icon)
-        let icon = legende.find(x => x.id === answers_icon.icons_id).icon_id
-        let obj = {answer_no: answers_icon.answer_no, icon_id: icon}
-        answers.push(obj)
-    }*/
-
-
-
     res.status(200).json(json_file)
 
-    if (test_data[0].start_date && test_data[0].finished === 0){
-        setTimeout( function(){
-            database.startTest(id)
-        }, 10000);
-    }
 };
+
 
 exports.sleepQuestions = async (req, res) => {
 
@@ -227,6 +212,7 @@ exports.updateTest = async (req, res) => {
     })
 };
 
+
 exports.initTest = async (req, res) => {
 
     const errors = validationResult(req);
@@ -248,7 +234,11 @@ exports.initTest = async (req, res) => {
 
     await database.initTest(req.params.id, req.body["start_date"])
 
-    return res.status(200).json({
+    res.status(200).json({
         message: "request completed"
     })
+
+     setTimeout( function(){
+            database.startTest(id)
+        }, 5000);
 };
