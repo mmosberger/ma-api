@@ -16,7 +16,7 @@ const helpers = require('./api/services/helpers.js');
 
 app.use(cors())
 
-app.use(morgan('dev'));
+app.use(morgan('combined'));
 
 app.use(urlencodedParser);
 
